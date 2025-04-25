@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import random
-import telegram
+from telegram import Bot
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ TELEGRAM_TOKEN = 'SEU_TOKEN_AQUI'
 CHANNEL_ID = '@SEU_CANAL_AQUI'
 
 def enviar_sinal_telegram(sinal):
-    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    bot = Bot(token=TELEGRAM_TOKEN)
     mensagem = (
         f"📈 Novo Sinal Gerado!\n"
         f"Par: {sinal['moeda']}\n"
