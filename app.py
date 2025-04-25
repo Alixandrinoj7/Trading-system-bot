@@ -1,33 +1,32 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
+import telegram
 import random
-from telegram import Bot
+from analise import gerar_sinal_inteligente  # ✅ Nova importação
 
 app = Flask(__name__)
 
-# Credenciais
+# Usuário e senha simulados
 USUARIO_CORRETO = "admin"
 SENHA_CORRETA = "1234"
 
-# Token e canal do Telegram via variáveis de ambiente
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "SEU_TOKEN_AQUI")
-CHANNEL_ID = os.environ.get("CHANNEL_ID", "@SEU_CANAL_AQUI")
+# Telegram Bot
+TELEGRAM_TOKEN = '7932994002:AAEi9wAKS2gl6dHwezOEbN5pIJUgVwN8LbASEU_TOKEN_AQUI'
+CHANNEL_ID = '5404730148'
 
 def enviar_sinal_telegram(sinal):
-    try:
-        bot = Bot(token=TELEGRAM_TOKEN)
-        mensagem = (
-            f"📈 Novo Sinal Gerado!\n"
-            f"Par: {sinal['moeda']}\n"
-            f"Tipo: {sinal['tipo']}\n"
-            f"Expiração: {sinal['expiracao']} min\n"
-            f"Preço Entrada: {sinal['preco_entrada']}\n"
-            f"Preço Saída: {sinal['preco_saida']}\n"
-            f"📊 Assertividade: {sinal['assertividade']}%"
-        )
-        bot.send_message(chat_id=CHANNEL_ID, text=mensagem)
-    except Exception as e:
-        print(f"[ERRO] Falha ao enviar para Telegram: {e}")
+    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    mensagem = (
+        f"📊 Novo Sinal Inteligente Gerado!\n"
+        f"Par: {sinal['moeda']}\n"
+        f"Tipo: {sinal['tipo']}\n"
+        f"Expiração: {sinal['expiracao']} min\n"
+        f"Horário: {sinal['horario']}\n"
+        f"Preço Entrada: {sinal['preco_entrada']}\n"
+        f"Preço Saída: {sinal['preco_saida']}\n"
+        f"📈 Assertividade Estimada: {sinal['assertividade']}%"
+    )
+    bot.send_message(chat_id=CHANNEL_ID, text=mensagem)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -47,25 +46,10 @@ def dashboard():
     sinais_negativos = total_sinais - sinais_positivos
     assertividade = round((sinais_positivos / total_sinais) * 100, 2)
 
-    base = round(random.uniform(1.0900, 1.1000), 4)
-    variacao = round(random.uniform(0.0005, 0.0015), 4)
-
-    preco_entrada = round(base, 4)
-    preco_saida = round(base + variacao, 4)
-
-    sinal = {
-        'moeda': 'EUR/USD',
-        'tipo': 'PUT',
-        'expiracao': 1,
-        'preco_entrada': preco_entrada,
-        'preco_saida': preco_saida,
-        'assertividade': assertividade
-    }
-
+    sinal = gerar_sinal_inteligente()  # ✅ Nova geração de sinal inteligente
     enviar_sinal_telegram(sinal)
 
-    return render_template('dashboard.html',
-                           total_sinais=total_sinais,
+    return render_template('dashboard.html', total_sinais=total_sinais,
                            sinais_positivos=sinais_positivos,
                            sinais_negativos=sinais_negativos,
                            assertividade=assertividade)
