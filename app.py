@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import random
-from telegram import Bot  # Corrigido import
+from telegram import Bot
 
 app = Flask(__name__)
 
-# Usuário e senha simulados
+# Credenciais
 USUARIO_CORRETO = "admin"
 SENHA_CORRETA = "1234"
 
-# Configurações do Telegram
+# Token e canal do Telegram via variáveis de ambiente
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "SEU_TOKEN_AQUI")
 CHANNEL_ID = os.environ.get("CHANNEL_ID", "@SEU_CANAL_AQUI")
 
@@ -27,7 +27,7 @@ def enviar_sinal_telegram(sinal):
         )
         bot.send_message(chat_id=CHANNEL_ID, text=mensagem)
     except Exception as e:
-        print(f"Erro ao enviar mensagem para o Telegram: {e}")
+        print(f"[ERRO] Falha ao enviar para Telegram: {e}")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -57,8 +57,8 @@ def dashboard():
         'moeda': 'EUR/USD',
         'tipo': 'PUT',
         'expiracao': 1,
-        'preco_entrada': f"{preco_entrada}",
-        'preco_saida': f"{preco_saida}",
+        'preco_entrada': preco_entrada,
+        'preco_saida': preco_saida,
         'assertividade': assertividade
     }
 

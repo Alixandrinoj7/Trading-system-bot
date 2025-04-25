@@ -2,89 +2,22 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel de Estatísticas - AvalonTrader</title>
+    <title>Dashboard - AvalonTrader</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #22d3ee;
-        }
-
-        .cards {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            flex: 1;
-            background-color: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .card h2 {
-            color: #22d3ee;
-            margin-bottom: 10px;
-        }
-
-        .chart-container {
-            background-color: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-        }
-
-        .sinal-info {
-            background-color: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 40px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>📊 Painel de Estatísticas - AvalonTrader</h1>
-
-    <div class="cards">
-        <div class="card">
-            <h2>Total de Sinais</h2>
-            <p>{{ total_sinais }}</p>
+<body style="background-color: #111; color: white;">
+    <div class="container py-5">
+        <h2 class="text-center mb-4">📊 Painel Estatístico - AvalonTrader</h2>
+        <div class="row text-center mb-5">
+            <div class="col">
+                <p>Total de Sinais: <strong>{{ total_sinais }}</strong></p>
+                <p>Sinais Positivos: <strong>{{ sinais_positivos }}</strong></p>
+                <p>Sinais Negativos: <strong>{{ sinais_negativos }}</strong></p>
+                <p>Assertividade: <strong>{{ assertividade }}%</strong></p>
+            </div>
         </div>
-        <div class="card">
-            <h2>Sinais Positivos</h2>
-            <p>{{ sinais_positivos }}</p>
-        </div>
-        <div class="card">
-            <h2>Sinais Negativos</h2>
-            <p>{{ sinais_negativos }}</p>
-        </div>
-        <div class="card">
-            <h2>Assertividade</h2>
-            <p>{{ assertividade }}%</p>
-        </div>
-    </div>
-
-    <div class="chart-container">
         <canvas id="grafico"></canvas>
-    </div>
-
-    <div class="sinal-info">
-        <h2>Último Sinal Gerado</h2>
-        <p><strong>Moeda:</strong> {{ sinal_gerado['moeda'] }}</p>
-        <p><strong>Tipo:</strong> {{ sinal_gerado['tipo'] }}</p>
-        <p><strong>Expiração:</strong> {{ sinal_gerado['expiracao'] }} minutos</p>
-        <p><strong>Preço de Entrada:</strong> {{ sinal_gerado['preco_entrada'] }}</p>
-        <p><strong>Preço de Saída:</strong> {{ sinal_gerado['preco_saida'] }}</p>
-        <p><strong>Assertividade:</strong> {{ sinal_gerado['assertividade'] }}%</p>
     </div>
 
     <script>
@@ -92,23 +25,12 @@
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Positivos', 'Negativos'],
+                labels: ['Acertos', 'Erros'],
                 datasets: [{
-                    label: 'Distribuição de Sinais',
+                    label: 'Estatísticas',
                     data: [{{ sinais_positivos }}, {{ sinais_negativos }}],
-                    backgroundColor: ['#22d3ee', '#ef4444'],
-                    borderWidth: 1
+                    backgroundColor: ['#4caf50', '#f44336']
                 }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'white'
-                        }
-                    }
-                }
             }
         });
     </script>
