@@ -1,3 +1,4 @@
+# ✅ app.py — Versão atualizada e funcional
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import random
@@ -5,18 +6,19 @@ from telegram import Bot
 
 app = Flask(__name__)
 
-# Usuário e senha simulados
+# Configurações de login
 USUARIO_CORRETO = "admin"
 SENHA_CORRETA = "1234"
 
-# Telegram Bot
+# Telegram Bot (substitua com seus dados reais)
 TELEGRAM_TOKEN = 'SEU_TOKEN_AQUI'
 CHANNEL_ID = '@SEU_CANAL_AQUI'
 
+# Função para enviar sinal via Telegram
 def enviar_sinal_telegram(sinal):
     bot = Bot(token=TELEGRAM_TOKEN)
     mensagem = (
-        f"📈 Novo Sinal Gerado!\n"
+        f"\n📈 Novo Sinal Gerado!\n"
         f"Par: {sinal['moeda']}\n"
         f"Tipo: {sinal['tipo']}\n"
         f"Expiração: {sinal['expiracao']} min\n"
@@ -46,7 +48,7 @@ def dashboard():
 
     sinal = {
         'moeda': 'EUR/USD',
-        'tipo': 'PUT',
+        'tipo': random.choice(['CALL', 'PUT']),
         'expiracao': 1,
         'preco_entrada': f"{round(random.uniform(1.0900, 1.1000), 4)}",
         'preco_saida': f"{round(random.uniform(1.0900, 1.1000), 4)}",
