@@ -1,32 +1,33 @@
-# ✅ app.py — Versão atualizada e funcional
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import random
-from telegram import Bot
+from telegram import Bot  # Corrigido import
 
 app = Flask(__name__)
 
-# Configurações de login
+# Usuário e senha simulados
 USUARIO_CORRETO = "admin"
 SENHA_CORRETA = "1234"
 
-# Telegram Bot (substitua com seus dados reais)
-TELEGRAM_TOKEN = 'SEU_TOKEN_AQUI'
-CHANNEL_ID = '@SEU_CANAL_AQUI'
+# Configurações do Telegram
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "SEU_TOKEN_AQUI")
+CHANNEL_ID = os.environ.get("CHANNEL_ID", "@SEU_CANAL_AQUI")
 
-# Função para enviar sinal via Telegram
 def enviar_sinal_telegram(sinal):
-    bot = Bot(token=TELEGRAM_TOKEN)
-    mensagem = (
-        f"\n📈 Novo Sinal Gerado!\n"
-        f"Par: {sinal['moeda']}\n"
-        f"Tipo: {sinal['tipo']}\n"
-        f"Expiração: {sinal['expiracao']} min\n"
-        f"Preço Entrada: {sinal['preco_entrada']}\n"
-        f"Preço Saída: {sinal['preco_saida']}\n"
-        f"📊 Assertividade: {sinal['assertividade']}%"
-    )
-    bot.send_message(chat_id=CHANNEL_ID, text=mensagem)
+    try:
+        bot = Bot(token=TELEGRAM_TOKEN)
+        mensagem = (
+            f"📈 Novo Sinal Gerado!\n"
+            f"Par: {sinal['moeda']}\n"
+            f"Tipo: {sinal['tipo']}\n"
+            f"Expiração: {sinal['expiracao']} min\n"
+            f"Preço Entrada: {sinal['preco_entrada']}\n"
+            f"Preço Saída: {sinal['preco_saida']}\n"
+            f"📊 Assertividade: {sinal['assertividade']}%"
+        )
+        bot.send_message(chat_id=CHANNEL_ID, text=mensagem)
+    except Exception as e:
+        print(f"Erro ao enviar mensagem para o Telegram: {e}")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -46,17 +47,25 @@ def dashboard():
     sinais_negativos = total_sinais - sinais_positivos
     assertividade = round((sinais_positivos / total_sinais) * 100, 2)
 
+    base = round(random.uniform(1.0900, 1.1000), 4)
+    variacao = round(random.uniform(0.0005, 0.0015), 4)
+
+    preco_entrada = round(base, 4)
+    preco_saida = round(base + variacao, 4)
+
     sinal = {
         'moeda': 'EUR/USD',
-        'tipo': random.choice(['CALL', 'PUT']),
+        'tipo': 'PUT',
         'expiracao': 1,
-        'preco_entrada': f"{round(random.uniform(1.0900, 1.1000), 4)}",
-        'preco_saida': f"{round(random.uniform(1.0900, 1.1000), 4)}",
+        'preco_entrada': f"{preco_entrada}",
+        'preco_saida': f"{preco_saida}",
         'assertividade': assertividade
     }
+
     enviar_sinal_telegram(sinal)
 
-    return render_template('dashboard.html', total_sinais=total_sinais,
+    return render_template('dashboard.html',
+                           total_sinais=total_sinais,
                            sinais_positivos=sinais_positivos,
                            sinais_negativos=sinais_negativos,
                            assertividade=assertividade)
