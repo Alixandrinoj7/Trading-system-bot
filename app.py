@@ -44,20 +44,27 @@ def index():
 def home():
     return render_template('home.html')
 
+from datetime import datetime, timedelta
+
 @app.route('/dashboard')
 def dashboard():
+    # Simulação de dados estatísticos
     total_sinais = 150
     sinais_positivos = random.randint(80, 120)
     sinais_negativos = total_sinais - sinais_positivos
     assertividade = round((sinais_positivos / total_sinais) * 100, 2)
 
-    # Gerar sinal
+    # Gerar um novo sinal com horários
+    agora = datetime.now()
+    entrada_horario = (agora + timedelta(seconds=10)).strftime("%H:%M")
+    saida_horario = (agora + timedelta(minutes=1)).strftime("%H:%M")
+
     sinal = {
-        'moeda': 'EUR/USD',
-        'tipo': 'Call',
+        'moeda': 'BTC/USD',
+        'tipo': random.choice(['Call', 'Put']),
         'expiracao': 1,
-        'preco_entrada': '1.0910',
-        'preco_saida': '1.0925',
+        'preco_entrada': entrada_horario,
+        'preco_saida': saida_horario,
         'assertividade': assertividade
     }
 
