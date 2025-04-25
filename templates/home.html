@@ -5,11 +5,12 @@
     <title>Início - AvalonTrader</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
             background-color: #0f172a;
+            font-family: 'Segoe UI', sans-serif;
             color: #f8fafc;
+            margin: 0;
+            padding: 40px;
             text-align: center;
-            padding: 50px;
         }
 
         h1 {
@@ -19,35 +20,35 @@
 
         .menu {
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
 
         .menu a {
             background-color: #1e293b;
-            color: #f8fafc;
-            padding: 20px 30px;
-            text-decoration: none;
+            color: #22d3ee;
+            padding: 15px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            text-decoration: none;
             font-weight: bold;
+            transition: background-color 0.3s;
         }
 
         .menu a:hover {
-            background-color: #22d3ee;
-            color: #0f172a;
+            background-color: #2563eb;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <h1>Bem-vindo ao AvalonTrader</h1>
+    <h1>🌐 Bem-vindo ao AvalonTrader Web</h1>
+
     <div class="menu">
-        <a href="/dashboard">📊 Painel Estatístico</a>
-        <a href="#">🧠 Gerar Entradas (em breve)</a>
-        <a href="#">📈 Últimas Entradas (em breve)</a>
-        <a href="#">🔐 Configurações</a>
+        <a href="/dashboard">📊 Painel de Estatísticas</a>
+        <a href="/gerar">⚙️ Gerar Nova Entrada</a>
+        <a href="/ultimas">📈 Últimas Entradas</a>
+        <a href="/config">🔐 Configurações</a>
     </div>
 </body>
 </html>

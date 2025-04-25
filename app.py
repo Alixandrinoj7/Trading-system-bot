@@ -40,10 +40,6 @@ def index():
             return render_template('login.html', erro="Usuário ou senha incorretos.")
     return render_template('login.html')
 
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
 from datetime import datetime, timedelta
 
 @app.route('/dashboard')
@@ -77,6 +73,9 @@ def dashboard():
         sinais_negativos=sinais_negativos,
         assertividade=assertividade
     )
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
