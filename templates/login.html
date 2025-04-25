@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>AvalonTrader - Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background-color: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            color: #22d3ee;
+            margin-bottom: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #3b82f6;
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #22d3ee;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .login-box button:hover {
+            background-color: #2563eb;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h1>Login</h1>
+            {% if erro %}
+                <div class="error-message">{{ erro }}</div>
+            {% endif %}
+            <form method="POST">
+                <input type="text" name="usuario" placeholder="Usuário" required>
+                <input type="password" name="senha" placeholder="Senha" required>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
